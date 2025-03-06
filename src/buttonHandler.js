@@ -37,10 +37,20 @@ function createProject() {
         const projectName = projectNameInput.value.trim();
         addProject(projectName);
 
+        //add a success message indicating that the project was added, and a button to view the project
+        const successDiv = document.createElement('div');
+        successDiv.id = "success-div";
+        containerDiv.appendChild(successDiv);
         const successMessage = document.createElement('p');
         successMessage.textContent = "Project added!";
-        submitBtn.after(successMessage);
-        
+        successDiv.appendChild(successMessage);
+        const viewProjectButton = document.createElement('button');
+        viewProjectButton.textContent = "View project";
+        successDiv.appendChild(viewProjectButton);
+
+        //if "view project" button is clicked, load the respective project
+
+
         //remove input field and submit button
         projectNameInput.remove();
         submitBtn.remove();
@@ -56,13 +66,13 @@ function loadProjects() {
     ul.textContent = "My Projects: ";
     containerDiv.appendChild(ul);
 
-    projectList.forEach(project, () => {
+    projectList.forEach((project) => {
         const li = document.createElement('li');
         li.addEventListener('click', () => {renderProject(project)});
         li.textContent = `${project.name}`;
         li.id = `${project.name}`;
         ul.appendChild(li);
-    })
+    });
 }
 
 /*
@@ -70,11 +80,11 @@ When user selects a particular project, show the corresponding to-do items on th
 */
 function renderProject(project) {
     containerDiv.textContent = '';
-    const ul = document.createElement(ul);
+    const ul = document.createElement("ul");
     ul.textContent = `Project ${project.name}: `;
     containerDiv.appendChild(ul);
 
-    project.todos.forEach(todo, () => {
+    project.todos.forEach((todo) => {
         const li = document.createElement('li');
         li.textContent = todo.title;
         ul.appendChild(li);
