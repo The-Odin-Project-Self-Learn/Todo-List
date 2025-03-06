@@ -48,12 +48,18 @@ function createProject() {
         viewProjectButton.textContent = "View project";
         successDiv.appendChild(viewProjectButton);
 
-        //if "view project" button is clicked, load the respective project
-
-
         //remove input field and submit button
         projectNameInput.remove();
         submitBtn.remove();
+
+        //if "view project" button is clicked, load the respective project
+        viewProjectButton.addEventListener('click', () => {
+            projectList.forEach((project) => {
+                if (project.name == projectName) {
+                    renderProject(project);
+                }
+            });
+        });
     })
 }
 
@@ -66,6 +72,7 @@ function loadProjects() {
     ul.textContent = "My Projects: ";
     containerDiv.appendChild(ul);
 
+    //upon each project name being clicked, show its todos
     projectList.forEach((project) => {
         const li = document.createElement('li');
         li.addEventListener('click', () => {renderProject(project)});
