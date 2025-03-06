@@ -1,7 +1,13 @@
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
-  }
-  ul {
-    font-size: 30px;
-  }
+}
+ul {
+  font-size: 30px;
+}
+
+/*id selectors*/
+#main-container {
+  min-height: 100vh;
+}
+
