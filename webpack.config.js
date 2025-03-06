@@ -10,6 +10,7 @@ module.exports = {
   mode: "development", 
   devServer: {
     static: "./dist",
+    watchFiles: ["src/**/*"], //watches all source files
     hot: true,
   },
   module: {
