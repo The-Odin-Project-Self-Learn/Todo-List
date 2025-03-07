@@ -5,6 +5,11 @@ body {
 ul {
   font-size: 30px;
 }
+li {
+  font-size: 20px;
+  margin-top: 10px;
+}
+
 
 /*id selectors*/
 #main-container {
@@ -17,5 +22,18 @@ ul {
 #success-div {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: space-evenly;
+}
+
+#project-list-div {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  margin-top: 10px;
+}
+
+
+/* Class selectors */
+.project-buttons {
+  size: 10px;
 }
