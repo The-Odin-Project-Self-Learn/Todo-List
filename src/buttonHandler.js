@@ -147,7 +147,21 @@ function addTodo(event, project) {
     clickedButton.after(form);
 
     //handle form submission by adding a new Todo item to the relevant project based on inputted form data
+    submitButton.addEventListener('click', (e) => {
+        e.preventDefault(); //prevent full page reload upon submission
 
+        const todoTitle = titleInput.value.trim();
+        const todoDate = dueDateInput.value;
+
+        if (!todoTitle || !todoDate) {
+            alert("Please enter both a title and a due date");
+            return;
+        }
+
+        project.addTodo(todoTitle, todoDate);
+
+        form.remove(); //delete the form after submission
+    });
 }
 
 /*
