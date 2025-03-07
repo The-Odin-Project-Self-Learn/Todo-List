@@ -1,4 +1,4 @@
-import { loadHomePage, createProject, loadProjects, renderProject } from "./buttonHandler";
+import { loadHomePage, createProject, loadProjects } from "./buttonHandler";
 
 const homeButton = document.getElementById('home-button');
 homeButton.addEventListener('click', () => {
@@ -14,5 +14,6 @@ const newProjectButton = document.getElementById('new-project-button');
 newProjectButton.addEventListener('click', () => {
     createProject();
 })
+
 
 

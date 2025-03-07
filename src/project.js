@@ -4,7 +4,8 @@ class Project {
         this.todos = []; //every project starts with an empty set of todos
     }
 
-    addTodo(todo) {
+    addTodo(title, dueDate) {
+        const todo = new Todo(title, dueDate);
         this.todos.push(todo);
     }
 

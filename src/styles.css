@@ -29,11 +29,20 @@ li {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
+  align-items: center;
   margin-top: 10px;
 }
 
+#project-buttons-div {
+  display: flex;
+  flex-direction: row;
+}
+
+#todo-form {
+  
+}
 
 /* Class selectors */
 .project-buttons {
-  size: 10px;
+  height: 40px;
 }

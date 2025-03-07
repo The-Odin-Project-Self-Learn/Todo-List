@@ -31,7 +31,6 @@ function createProject() {
     const newProjectButton = document.getElementById('new-project-button');
     newProjectButton.after(projectNameInput, submitBtn);
 
-    //add the project to the library after user hits submit
     submitBtn.addEventListener('click', () => {
         //add new project to list of current projects
         const projectName = projectNameInput.value.trim();
@@ -61,7 +60,7 @@ function createProject() {
         viewProjectButton.addEventListener('click', () => {
             projectList.forEach((project) => {
                 if (project.name == projectName) {
-                    renderProject(project);
+                    showTodos(project);
                 }
             });
         });
@@ -75,13 +74,17 @@ function loadProjects() {
     //clear the page
     containerDiv.textContent = '';
 
+    createProjectList();
+}
+
+function createProjectList() {
     //create list object and add it to page
     const ul = document.createElement('ul');
     ul.textContent = "My Projects: ";
     containerDiv.appendChild(ul);
 
-    //add each project, along with a "view" + "add todo" button, to the list
     projectList.forEach((project) => {
+        //div container that stores the project name and the button container
         const projectListDiv = document.createElement('div');
         projectListDiv.id = "project-list-div";
         ul.appendChild(projectListDiv);
@@ -90,23 +93,67 @@ function loadProjects() {
         projectName.textContent = `${project.name}`;
         projectListDiv.appendChild(projectName);
 
+        //div container that stores the "view project" and "add todo" buttons
+        const projectButtonsDiv = document.createElement('div');
+        projectButtonsDiv.id = "project-buttons-div";
+        projectListDiv.appendChild(projectButtonsDiv);
+
         const viewButton = document.createElement('button');
         viewButton.textContent = 'View project';
         viewButton.classList.add("project-buttons");
-        viewButton.addEventListener('click', () => {renderProject(project)});
-        projectListDiv.appendChild(viewButton);
+        viewButton.addEventListener('click', () => {showTodos(project)});
+        projectButtonsDiv.appendChild(viewButton);
 
         const addTodoButton = document.createElement('button');
         addTodoButton.textContent = "Add todo";
         addTodoButton.classList.add("project-buttons");
-        projectListDiv.appendChild(addTodoButton);
+        addTodoButton.addEventListener('click', (event) => {addTodo(event, project)})
+        projectButtonsDiv.appendChild(addTodoButton);
     });
+}
+
+/*
+Once user hits "add todo", a form should open, allowing the user to enter todo details
+*/
+function addTodo(event, project) {
+    //if a form already exists next to the todo, clear it before creating a new one
+    const existingForm = document.getElementById("todo-form");
+    const clickedButton = event.target; //the specific "add todo" button that was clicked
+    if (existingForm) {
+        existingForm.remove();
+    }
+
+    const form = document.createElement('form');
+    form.id = "todo-form";
+    
+    const titleInput = document.createElement("input");
+    titleInput.type = "text";
+    titleInput.placeholder = "Enter title";
+    titleInput.id = "todo-title";
+    form.appendChild(titleInput);
+
+    const dueDateInput = document.createElement("input");
+    dueDateInput.type = "date";
+    dueDateInput.placeholder = "Enter due date";
+    dueDateInput.id = "todo-due-date";
+    form.appendChild(dueDateInput);
+
+    const submitButton = document.createElement("button");
+    submitButton.textContent = "submit";
+    submitButton.type = "submit";
+    form.appendChild(submitButton);
+
+    //add the form next to the specific "add todo" button that was clicked
+    clickedButton.after(form);
+
+    //handle form submission by adding a new Todo item to the relevant project based on inputted form data
+
 }
 
 /*
 When user selects a particular project, show the corresponding to-do items on the page
 */
-function renderProject(project) {
+function showTodos(project) {
     containerDiv.textContent = '';
     const ul = document.createElement("ul");
     ul.textContent = `${project.name}: `;
@@ -119,4 +166,4 @@ function renderProject(project) {
     });
 }
 
-export {loadHomePage, createProject, loadProjects, renderProject};
+export {loadHomePage, createProject, loadProjects, showTodos};
