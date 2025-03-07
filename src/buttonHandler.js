@@ -31,6 +31,7 @@ function createProject() {
     const newProjectButton = document.getElementById('new-project-button');
     newProjectButton.after(projectNameInput, submitBtn);
 
+    //upon form submission, new todo item should be added to the specific project
     submitBtn.addEventListener('click', () => {
         //add new project to list of current projects
         const projectName = projectNameInput.value.trim();
@@ -41,16 +42,35 @@ function createProject() {
         if (containerDiv.hasChildNodes()) {
             containerDiv.textContent = '';
         }
+        //create message + buttons container
         const successDiv = document.createElement('div');
         successDiv.id = "success-div";
         containerDiv.appendChild(successDiv);
         const successMessage = document.createElement('p');
         successMessage.textContent = `${projectName}`;
         successDiv.appendChild(successMessage);
+
+        //create project buttons container
+        const projectButtonsDiv = document.createElement('div');
+        projectButtonsDiv.classList.add("project-buttons-div");
+        successDiv.appendChild(projectButtonsDiv);
+        //create "view project" button and attach it to button container
         const viewProjectButton = document.createElement('button');
         viewProjectButton.textContent = "View project";
         viewProjectButton.classList.add("project-buttons");
-        successDiv.appendChild(viewProjectButton);
+        projectButtonsDiv.appendChild(viewProjectButton);
+        //create "add todo" button and attach it to button container
+        const addTodoButton = document.createElement('button');
+        addTodoButton.textContent = "Add todo";
+        addTodoButton.classList.add("project-buttons");
+        addTodoButton.addEventListener('click', (event) => { //if particular "add todo" button clicked, add to project
+            projectList.forEach((project) => {
+                if (project.name == projectName) {
+                    addTodo(event, project);
+                }
+            })
+        });
+        projectButtonsDiv.appendChild(addTodoButton);
 
         //remove input field and submit button
         projectNameInput.remove();
@@ -71,9 +91,7 @@ function createProject() {
 When user clicks "my projects", build a list of the user's projects
 */
 function loadProjects() {
-    //clear the page
     containerDiv.textContent = '';
-
     createProjectList();
 }
 
@@ -175,7 +193,7 @@ function showTodos(project) {
 
     project.todos.forEach((todo) => {
         const li = document.createElement('li');
-        li.textContent = todo.title;
+        li.textContent = `${todo.title} Due: ${todo.dueDate}`;
         ul.appendChild(li);
     });
 }
