@@ -191,31 +191,64 @@ function showTodos(project) {
     ul.textContent = `${project.name}: `;
     containerDiv.appendChild(ul);
 
-    project.todos.forEach((todo) => {
+    //reverse todos before displaying them so that the most newly-created todo appears first
+    project.todos.slice().reverse().forEach((todo) => {
+        //create container for the todo item title and due date + buttons
         const todoItemDiv = document.createElement("div");
         todoItemDiv.classList.add("todo-item-div");
+
+        //add container to list
         ul.appendChild(todoItemDiv);
 
+        //create todo item title
         const todoItemTitle = document.createElement('p');
         todoItemTitle.textContent = `${todo.title}`;
         todoItemTitle.classList.add("todo-item-content");
-        todoItemDiv.appendChild(todoItemTitle);
 
         //create container for due date and "remove" button
         const buttonsDiv = document.createElement('div');
-        todoItemDiv.appendChild(buttonsDiv);
         buttonsDiv.classList.add('project-buttons-div');
 
-        //add due date and remove button to container
+        //add todo item title and button container to outer container
+        todoItemDiv.appendChild(todoItemTitle);
+        todoItemDiv.appendChild(buttonsDiv);
+
+        //create due date and remove todo button
         const todoItemDate = document.createElement('p');
         todoItemDate.textContent = `Due: ${todo.dueDate}`;
         todoItemDate.classList.add("todo-item-content");
-        buttonsDiv.appendChild(todoItemDate);
         const removeTodoButton = document.createElement('button');
         removeTodoButton.textContent = "Remove todo";
         removeTodoButton.classList.add('project-buttons');
+
+        //add due date + remove todo button to container
+        buttonsDiv.appendChild(todoItemDate);
         buttonsDiv.appendChild(removeTodoButton);
+
+        //attach event listener to each "remove todo" button
+        removeTodoButton.addEventListener('click', (event) => {removeTodo(event, todo, project);});
     });
+}
+
+//removes specific todo item from project
+function removeTodo(event, todo, project) {
+    //remove todo from project's internal list of todos
+    project.removeTodo(todo);
+
+    /*
+    Remove todo from UI
+    */
+    //remove the todo item from the list, which involves removing the specific <div> container containing the title + due date
+    const clickedRemoveButton = event.target; //identify the specific "remove todo" button which was clicked
+
+    //obtain reference to this particular buttons' parent <div> - the <div> that contains the due date + remove todo button
+    const buttonsContainer = clickedRemoveButton.parentElement;
+
+    //obtain reference to the outer <div> containing the buttons <div> and todo item title
+    const outerDiv = buttonsContainer.parentElement;
+
+    //remove outer <div> from DOM
+    if (outerDiv) {outerDiv.remove()};
 }
 
 export {loadHomePage, createProject, loadProjects, showTodos};

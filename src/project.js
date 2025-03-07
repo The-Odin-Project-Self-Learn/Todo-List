@@ -12,8 +12,12 @@ class Project {
     }
 
     removeTodo(todo) {
-        this.todos.splice(index, 1);
+        const index = this.todos.indexOf(todo); //Find the index of the todo
+        if (index !== -1) {
+            this.todos.splice(index, 1); //Remove it only if it exists
+        }
     }
+    
 }
 
 export {Project};
