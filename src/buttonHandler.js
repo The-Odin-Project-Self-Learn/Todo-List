@@ -183,7 +183,7 @@ function addTodo(event, project) {
 }
 
 /*
-When user selects a particular project, show the corresponding to-do items on the page
+When user chooses to view a particular project, show the corresponding to-do items on the page
 */
 function showTodos(project) {
     containerDiv.textContent = '';
@@ -192,9 +192,29 @@ function showTodos(project) {
     containerDiv.appendChild(ul);
 
     project.todos.forEach((todo) => {
-        const li = document.createElement('li');
-        li.textContent = `${todo.title} Due: ${todo.dueDate}`;
-        ul.appendChild(li);
+        const todoItemDiv = document.createElement("div");
+        todoItemDiv.classList.add("todo-item-div");
+        ul.appendChild(todoItemDiv);
+
+        const todoItemTitle = document.createElement('p');
+        todoItemTitle.textContent = `${todo.title}`;
+        todoItemTitle.classList.add("todo-item-content");
+        todoItemDiv.appendChild(todoItemTitle);
+
+        //create container for due date and "remove" button
+        const buttonsDiv = document.createElement('div');
+        todoItemDiv.appendChild(buttonsDiv);
+        buttonsDiv.classList.add('project-buttons-div');
+
+        //add due date and remove button to container
+        const todoItemDate = document.createElement('p');
+        todoItemDate.textContent = `Due: ${todo.dueDate}`;
+        todoItemDate.classList.add("todo-item-content");
+        buttonsDiv.appendChild(todoItemDate);
+        const removeTodoButton = document.createElement('button');
+        removeTodoButton.textContent = "Remove todo";
+        removeTodoButton.classList.add('project-buttons');
+        buttonsDiv.appendChild(removeTodoButton);
     });
 }
 

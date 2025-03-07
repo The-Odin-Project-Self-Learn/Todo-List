@@ -46,4 +46,17 @@ li {
   display: flex;
   flex-direction: row;
   align-items: center;
+  gap: 10px;
+}
+
+.todo-item-div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 50px;
+  margin-top: 20px;
+}
+
+.todo-item-content {
+  font-size: 20px;
 }
