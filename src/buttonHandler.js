@@ -176,6 +176,7 @@ function addTodo(event, project) {
             return;
         }
 
+        //add the todo to the project's internal storage of todos
         project.addTodo(todoTitle, todoDate);
 
         form.remove(); //delete the form after submission
@@ -187,9 +188,30 @@ When user chooses to view a particular project, show the corresponding to-do ite
 */
 function showTodos(project) {
     containerDiv.textContent = '';
+
     const ul = document.createElement("ul");
-    ul.textContent = `${project.name}: `;
+
+    //create container for the project name and "add todo" button
+    const projectNameAndButtonContainer = document.createElement('div');
+    projectNameAndButtonContainer.classList.add('project-buttons-div');
+
+    //create project title
+    const projectName = document.createElement('p');
+    projectName.textContent = project.name;
+
+    //create "add todo" button
+    const addTodoButton = document.createElement('button');
+    addTodoButton.textContent = "Add todo";
+    addTodoButton.classList.add('project-buttons');
+    addTodoButton.addEventListener('click', (event) => {
+        addTodo(event, project);
+    });
+
+    //append everything in order
     containerDiv.appendChild(ul);
+    ul.appendChild(projectNameAndButtonContainer);
+    projectNameAndButtonContainer.appendChild(projectName);
+    projectNameAndButtonContainer.appendChild(addTodoButton);
 
     //reverse todos before displaying them so that the most newly-created todo appears first
     project.todos.slice().reverse().forEach((todo) => {
