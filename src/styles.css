@@ -34,7 +34,21 @@ li {
 }
 
 #todo-form {
+  
+}
 
+#todo-div-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+#todo-item-div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 20px;
+  gap: 50px;
 }
 
 /* Class selectors */
@@ -42,19 +56,18 @@ li {
   height: 40px;
 }
 
-.project-buttons-div {
+.project-title-container {
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 10px;
 }
 
-.todo-item-div {
+.due-date-and-remove-button-container {
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 50px;
-  margin-top: 20px;
+  gap: 10px;
 }
 
 .todo-item-content {
