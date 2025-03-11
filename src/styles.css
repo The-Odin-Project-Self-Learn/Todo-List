@@ -19,7 +19,7 @@ li {
   gap: 10px;
 }
 
-#success-div {
+#project-message-container {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
@@ -49,6 +49,14 @@ li {
   align-items: center;
   margin-top: 20px;
   gap: 50px;
+}
+
+#create-project-btn {
+
+}
+
+#submit-button {
+  
 }
 
 /* Class selectors */

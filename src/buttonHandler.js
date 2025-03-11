@@ -123,4 +123,113 @@ function createListOfProjects() {
     });
 }
 
-export {createInputField, addProject, showProjectName, createListOfProjects};
+function buildForm(clickedButton) {
+    const form = document.createElement('form');
+    form.id = "todo-form";
+
+    //create form title section
+    const titleInput = document.createElement("input");
+    titleInput.type = "text";
+    titleInput.placeholder = "Enter title";
+    titleInput.id = "todo-title";
+    
+    //create form due date input section
+    const dueDateInput = document.createElement("input");
+    dueDateInput.type = "date";
+    dueDateInput.placeholder = "Enter due date";
+    dueDateInput.id = "todo-due-date";
+
+    //create form submit button
+    const submitButton = document.createElement("button");
+    submitButton.textContent = "submit";
+    submitButton.type = "submit";
+    submitButton.id = "submit-button";
+
+    //append everything to the form in order
+    form.appendChild(titleInput);
+    form.appendChild(dueDateInput);
+    form.appendChild(submitButton);
+
+    //add the form next to the specific "add todo" button that was clicked
+    clickedButton.after(form);
+}
+
+
+/*
+Creates a new Todo object from form data and adds it to project's storage.
+If user is currently viewing a project while trying to add a new todo, the project list updates visually
+*/
+function processForm(project) {
+    const todoTitle = titleInput.value.trim();
+    const todoDate = dueDateInput.value;
+    if (!todoTitle || !todoDate) {
+        alert("Please enter both a title and a due date");
+        return;
+    }
+
+    project.addTodo(todoTitle, todoDate);
+
+    form.remove();
+
+    if (viewingProject ===  project) {
+        updateTodoListUI(project);
+    }
+}
+
+/*
+Empties out the container of todos, 
+iterates through the project's todos, 
+refills the container of todos
+*/
+function updateTodoListUI(project) {
+    //if the div container already exists and contains items, clear it before refilling
+    let todoContainer = document.getElementById('todo-div-container');
+    if (todoContainer) {
+        todoContainer.textContent = '';
+    } else {
+        todoContainer = document.createElement('div');
+        todoContainer.id = 'todo-div-container';
+    }
+    addTodosToContainer(todoContainer, project);
+}
+
+function addTodosToContainer(todoContainer, project) {
+    //fill the container with todo items
+    project.todos.slice().reverse().forEach((todo) => {
+    //create container for the todo item title and due date + buttons
+    const todoItemDiv = document.createElement("div");
+    todoItemDiv.id = "todo-item-div";
+
+    //create todo item title
+    const todoItemTitle = document.createElement('p');
+    todoItemTitle.textContent = `${todo.title}`;
+    todoItemTitle.classList.add("todo-item-content");
+
+    //create container for due date and "remove" button
+    const dueDateAndRemoveButtonContainer = document.createElement('div');
+    dueDateAndRemoveButtonContainer.classList.add('due-date-and-remove-button-container');
+
+    //create due date and remove todo button
+    const todoItemDate = document.createElement('p');
+    todoItemDate.textContent = `Due: ${todo.dueDate}`;
+    todoItemDate.classList.add("todo-item-content");
+    const removeTodoButton = document.createElement('button');
+    removeTodoButton.textContent = "Remove todo";
+    removeTodoButton.classList.add('project-buttons');
+    removeTodoButton.addEventListener('click', (event) => {removeTodo(event, todo, project);});
+
+    //add todo item to container
+    todoContainer.appendChild(todoItemDiv);
+    //add todo item title and button container to outer container
+    todoItemDiv.appendChild(todoItemTitle);
+    todoItemDiv.appendChild(dueDateAndRemoveButtonContainer);
+    //add due date + remove todo button to container
+    dueDateAndRemoveButtonContainer.appendChild(todoItemDate);
+    dueDateAndRemoveButtonContainer.appendChild(removeTodoButton);
+    });
+
+    //add todoItem container to main page
+    containerDiv.appendChild(todoContainer);
+}
+
+export {createInputField, addProject, showProjectName, createListOfProjects, processForm, updateTodoListUI};
