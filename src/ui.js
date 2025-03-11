@@ -1,4 +1,4 @@
-import { loadHomePage, createProject, loadProjects } from "./buttonHandler";
+import { loadHomePage, createProject, loadProjects } from "./navbarHandler";
 
 const homeButton = document.getElementById('home-button');
 homeButton.addEventListener('click', () => {
