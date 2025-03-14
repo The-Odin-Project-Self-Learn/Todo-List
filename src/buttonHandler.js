@@ -1,6 +1,7 @@
 import { addToListOfProjects, projectList } from "./projectManager";
 import { createViewProjectButton, createAddTodoButton, createRemoveTodoButton } from "./buttonCreator";
 import { createNameAndButtonsContainer, createProjectListContainer, createDueDateAndRemoveButtonContainer, createHeaderContainer, createTodoItemContainer } from "./containerCreator";
+import { buildForm } from "./formHandler";
 
 let viewingProject = null;
 const containerDiv = document.getElementById('main-container');
@@ -121,12 +122,14 @@ function viewProject(project) {
 }
 
 function createListOfProjects() {
-    const todoContainer = document.getElementById('todo-container');
-    if (todoContainer) {
-        todoContainer.textContent = '';
+    let todoContainer = document.getElementById('todo-container');
+    if (!todoContainer) {
+        todoContainer = document.createElement('div');
+        todoContainer.id = 'todo-container';
     }
 
-    //create list object and add it to page
+    todoContainer.textContent = '';
+
     const ul = document.createElement('ul');
     ul.textContent = "My Projects: ";
 
@@ -144,46 +147,14 @@ function createListOfProjects() {
         const addTodoButton = createAddTodoButton();
         addTodoButton.addEventListener('click', (event) => {addTodo(event, project)})
         
-        containerDiv.appendChild(ul);
         ul.appendChild(projectListContainer);
         projectListContainer.appendChild(projectName);
         projectListContainer.appendChild(dueDateAndRemoveButtonContainer);
         dueDateAndRemoveButtonContainer.appendChild(viewButton);
         dueDateAndRemoveButtonContainer.appendChild(addTodoButton);
     });
+    containerDiv.appendChild(ul);
 }
-
-function buildForm(clickedButton) {
-    const form = document.createElement('form');
-    form.id = "todo-form";
-
-    //create form title section
-    const titleInput = document.createElement("input");
-    titleInput.type = "text";
-    titleInput.placeholder = "Enter title";
-    titleInput.id = "todo-title";
-    
-    //create form due date input section
-    const dueDateInput = document.createElement("input");
-    dueDateInput.type = "date";
-    dueDateInput.placeholder = "Enter due date";
-    dueDateInput.id = "todo-due-date";
-
-    //create form submit button
-    const submitButton = document.createElement("button");
-    submitButton.textContent = "submit";
-    submitButton.type = "submit";
-    submitButton.id = "submit-button";
-
-    //append everything to the form in order
-    form.appendChild(titleInput);
-    form.appendChild(dueDateInput);
-    form.appendChild(submitButton);
-
-    //add the form next to the specific "add todo" button that was clicked
-    clickedButton.after(form);
-}
-
 
 /*
 Creates a new Todo object from form data and adds it to project's storage.
@@ -262,7 +233,8 @@ function addTodo(event, project) {
 
     //build the form next to the button
     const clickedAddTodoButton = event.target; 
-    buildForm(clickedAddTodoButton);
+    const form = buildForm(clickedAddTodoButton);
+    clickedAddTodoButton.after(form);
     
     //once submitted, process the form by using form details to create a new todo object and add it to the project's internal storage
     const submitButton = document.getElementById("submit-button");
