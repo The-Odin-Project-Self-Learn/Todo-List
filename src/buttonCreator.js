@@ -12,4 +12,11 @@ function createAddTodoButton() {
     return addTodoButton;
 }
 
-export {createViewProjectButton, createAddTodoButton};
+function createRemoveTodoButton() {
+    const removeTodoButton = document.createElement('button');
+    todoTitle.textContent = `${todo.title}`;
+    todoTitle.classList.add("todo-item-content");
+    return removeTodoButton;
+}
+
+export {createViewProjectButton, createAddTodoButton, createRemoveTodoButton};

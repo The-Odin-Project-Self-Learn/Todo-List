@@ -14,7 +14,7 @@ function createNameAndButtonsContainer(projectName) {
 
 function createProjectListContainer() {
     const projectListContainer = document.createElement('div');
-    projectListContainer.id = "project-list-div";
+    projectListContainer.id = "project-list-container";
     return projectListContainer;
 }
 
@@ -24,4 +24,17 @@ function createDueDateAndRemoveButtonContainer() {
     return dueDateAndRemoveButtonContainer;
 }
 
-export {createNameAndButtonsContainer, createProjectListContainer, createDueDateAndRemoveButtonContainer};
+function createHeaderContainer() {
+    const projectTitleContainer = document.createElement('div');
+    projectTitleContainer.classList.add('project-title-container');
+    return projectTitleContainer;
+}
+
+//creates container for the todo item title and due date + buttons
+function createTodoItemContainer() {
+    const todoItemContainer = document.createElement("div");
+    todoItemDiv.id = "todo-item-container";
+    return todoItemContainer;
+}
+
+export {createNameAndButtonsContainer, createProjectListContainer, createDueDateAndRemoveButtonContainer, createHeaderContainer, createTodoItemContainer};

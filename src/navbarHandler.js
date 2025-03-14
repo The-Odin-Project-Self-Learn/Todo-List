@@ -1,7 +1,10 @@
 import {createInputField, addProject, showProjectName, createListOfProjects, processForm, createHeaderContainer} from "./buttonHandler";
 
 function loadHomePage() {
-    todoContainer.textContent = '';
+    const todoContainer = document.getElementById('todo-container');
+    if (todoContainer) {
+        todoContainer.textContent = '';
+    }
 }
 
 /*
@@ -21,7 +24,6 @@ function createProject() {
 When user clicks "my projects", build a list of the user's projects
 */
 function loadProjects() {
-    todoContainer.textContent = '';
     createListOfProjects();
 }
 
