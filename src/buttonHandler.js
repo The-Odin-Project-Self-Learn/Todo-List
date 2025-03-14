@@ -1,9 +1,15 @@
 import { addToListOfProjects, projectList } from "./projectManager";
+import { createViewProjectButton, createAddTodoButton } from "./buttonCreator";
+import { createNameAndButtonsContainer } from "./containerCreator";
 
 let viewingProject = null;
 const containerDiv = document.getElementById('main-container');
 
 function createInputField() {
+    //duplicate input fields should not get created
+    if (document.getElementById("project-name-input")) {
+        return;
+    }
     //create new input field for project name
     const projectNameInput = document.createElement('input');
     projectNameInput.type = 'text';
@@ -23,69 +29,47 @@ function createInputField() {
 /* 
 Adds project to list of projects
 */
-function addProject(projectName) {
+function addProject() {
     const projectNameInput = document.getElementById('project-name-input');
     const projectName = projectNameInput.value.trim();
     addToListOfProjects(projectName);
 }
 
 /*
+Activated when "create" button is clicked
 Visually displays the project with two buttons - "view project", "add todo"
 */
 function showProjectName() {
-    const projectNameInput = document.getElementById('project-name-input');
-    const projectName = projectNameInput.value.trim();
-    const createProjectBtn = document.getElementById('create-project-button');
-
     //clear the screen
     if (containerDiv.hasChildNodes()) {
         containerDiv.textContent = '';
     }
-    
-    //create project name + buttons container
-    const projectNameContainer = document.createElement('div');
-    projectNameContainer.id = "project-name-container";
-    const name = document.createElement('p');
-    name.textContent = `${projectName}`;
 
-
+    //retrieve value inputted into the "name" input field
+    const projectNameInput = document.getElementById('project-name-input');
+    const projectName = projectNameInput.value.trim();
+   
+    const nameAndButtonsContainer = createNameAndButtonsContainer(projectName);
     //create project buttons container
     const buttonContainer = document.createElement('div');
-    buttonContainer.classList.add("project-buttons-div");
-
-    //create "view project" button
-    const viewProjectButton = document.createElement('button');
-    viewProjectButton.textContent = "View project";
-    viewProjectButton.classList.add("project-buttons");
-    viewProjectButton.addEventListener('click', () => {
-        projectList.forEach((project) => {
-            if (project.name == projectName) {
-                viewProject(project);
-            }
-        });
-    });
-
-    //create "add todo" button
-    const addTodoButton = document.createElement('button');
-    addTodoButton.textContent = "Add todo";
-    addTodoButton.classList.add("project-buttons");
-    addTodoButton.addEventListener('click', (event) => { //if particular "add todo" button clicked, add to project
-        projectList.forEach((project) => {
-            if (project.name == projectName) {
-                addTodo(event, project); //add todo to project's internal storage of todo items
-            }
-        })
-    });
+    buttonContainer.id = "project-buttons-container";
+    const viewProjectButton = createViewProjectButton(projectName);
+    const addTodoButton = createAddTodoButton(projectName);
 
     //append everything in order
-    containerDiv.appendChild(projectNameContainer);
-    projectNameContainer.appendChild(buttonContainer);
-    buttonContainer.appendChild(viewProjectButton);
-    buttonContainer.appendChild(addTodoButton);
+    appendToProjectNameContainer(nameAndButtonsContainer, buttonContainer, viewProjectButton, addTodoButton);
 
     //remove form fields
+    const createProjectBtn = document.getElementById('create-project-btn');
     projectNameInput.remove();
     createProjectBtn.remove();
+}
+
+function appendToProjectNameContainer(nameAndButtonsContainer, buttonContainer, viewProjectButton, addTodoButton) {
+    containerDiv.appendChild(nameAndButtonsContainer);
+    nameAndButtonsContainer.appendChild(buttonContainer);
+    buttonContainer.appendChild(viewProjectButton);
+    buttonContainer.appendChild(addTodoButton);
 }
 
 function createListOfProjects() {
@@ -106,7 +90,7 @@ function createListOfProjects() {
 
         //div container that stores the "view project" and "add todo" buttons
         const projectdueDateAndRemoveButtonContainer = document.createElement('div');
-        projectdueDateAndRemoveButtonContainer.id = "project-buttons-div";
+        projectdueDateAndRemoveButtonContainer.id = "project-buttons-container";
         projectListDiv.appendChild(projectdueDateAndRemoveButtonContainer);
 
         const viewButton = document.createElement('button');
@@ -177,9 +161,7 @@ function processForm(project) {
 }
 
 /*
-Empties out the container of todos, 
-iterates through the project's todos, 
-refills the container of todos
+Empties out the container of todos, iterates through the project's todos, then refills the container of todos
 */
 function updateTodoListUI(project) {
     //if the div container already exists and contains items, clear it before refilling
@@ -232,4 +214,91 @@ function addTodosToContainer(todoContainer, project) {
     containerDiv.appendChild(todoContainer);
 }
 
-export {createInputField, addProject, showProjectName, createListOfProjects, processForm, updateTodoListUI};
+function createHeaderContainer(todoContainer) {
+    const projectTitleContainer = document.createElement('div');
+    projectTitleContainer.classList.add('project-title-container');
+
+    //create project title
+    const projectName = document.createElement('p');
+    projectName.textContent = project.name;
+
+    //create "add todo" button
+    const addTodoButton = document.createElement('button');
+    addTodoButton.textContent = "Add todo";
+    addTodoButton.classList.add('project-buttons');
+    addTodoButton.addEventListener('click', (event) => {
+        console.log('add todo button clicked!');
+        addTodo(event, project);
+    });
+
+    //append everything in order
+    todoContainer.appendChild(projectTitleContainer);
+    projectTitleContainer.appendChild(projectName);
+    projectTitleContainer.appendChild(addTodoButton);
+}
+
+/*
+Adds a new todo item to the given project's internal storage of todo items
+*/
+function addTodo(event, project) {
+    //if a form already exists next to the todo, clear it before creating a new one
+    const existingForm = document.getElementById("todo-form");
+    if (existingForm) {
+        existingForm.remove();
+    }
+
+    //build the form next to the button
+    const clickedAddTodoButton = event.target; 
+    buildForm(clickedAddTodoButton);
+    
+    //once submitted, process the form by using form details to create a new todo object and add it to the project's internal storage
+    const submitButton = document.getElementById("submit-button");
+    submitButton.addEventListener('click', () => {
+        processForm(project);
+    });
+}
+
+
+//removes specific todo item from project
+function removeTodo(event, todo, project) {
+    //remove todo from project's internal list of todos
+    project.removeTodo(todo);
+
+    /*
+    Remove todo from UI
+    */
+    //remove the todo item from the list, which involves removing the specific <div> container containing the title + due date
+    const clickedRemoveButton = event.target; //identify the specific "remove todo" button which was clicked
+
+    //obtain reference to this particular buttons' parent <div> - the <div> that contains the due date + remove todo button
+    const buttonsContainer = clickedRemoveButton.parentElement;
+
+    //obtain reference to the outer <div> containing the buttons <div> and todo item title
+    const outerDiv = buttonsContainer.parentElement;
+
+    //remove outer <div> from DOM
+    if (outerDiv) {outerDiv.remove()};
+}
+
+/*
+When user chooses to view a particular project, show the corresponding to-do items on the page
+*/
+function viewProject(project) {
+    viewingProject = project;
+
+    //check if a container already exists for the to-do items - if not, create a new one
+    let todoContainer = document.getElementById('todo-container');
+    if (!todoContainer) {
+        todoContainer = document.createElement('div');
+        todoContainer.id = 'todo-container';
+    }
+    todoContainer.textContent = '';
+
+    //create container for the project name and "add todo" button
+    createHeaderContainer(todoContainer);
+
+    //Add todo list items to container
+    updateTodoListUI(project);
+}
+
+export {createInputField, addProject, showProjectName, createListOfProjects, processForm, updateTodoListUI, createHeaderContainer};
