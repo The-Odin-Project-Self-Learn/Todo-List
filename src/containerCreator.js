@@ -12,4 +12,16 @@ function createNameAndButtonsContainer(projectName) {
     return nameAndButtonsContainer;
 }
 
-export {createNameAndButtonsContainer};
+function createProjectListContainer() {
+    const projectListContainer = document.createElement('div');
+    projectListContainer.id = "project-list-div";
+    return projectListContainer;
+}
+
+function createDueDateAndRemoveButtonContainer() {
+    const dueDateAndRemoveButtonContainer = document.createElement('div');
+    dueDateAndRemoveButtonContainer.id = "project-buttons-container";
+    return dueDateAndRemoveButtonContainer;
+}
+
+export {createNameAndButtonsContainer, createProjectListContainer, createDueDateAndRemoveButtonContainer};

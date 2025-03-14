@@ -1,6 +1,6 @@
 import { addToListOfProjects, projectList } from "./projectManager";
 import { createViewProjectButton, createAddTodoButton } from "./buttonCreator";
-import { createNameAndButtonsContainer } from "./containerCreator";
+import { createNameAndButtonsContainer, createProjectListContainer, createDueDateAndRemoveButtonContainer } from "./containerCreator";
 
 let viewingProject = null;
 const containerDiv = document.getElementById('main-container');
@@ -50,11 +50,25 @@ function showProjectName() {
     const projectName = projectNameInput.value.trim();
    
     const nameAndButtonsContainer = createNameAndButtonsContainer(projectName);
-    //create project buttons container
     const buttonContainer = document.createElement('div');
     buttonContainer.id = "project-buttons-container";
-    const viewProjectButton = createViewProjectButton(projectName);
-    const addTodoButton = createAddTodoButton(projectName);
+
+    const viewProjectButton = createViewProjectButton();
+    viewProjectButton.addEventListener('click', () => {
+        projectList.forEach((project) => {
+            if (project.name == projectName) {
+                viewProject(project);
+            }
+        });
+    });
+    const addTodoButton = createAddTodoButton();
+    addTodoButton.addEventListener('click', (event) => { //if particular "add todo" button clicked, add to project
+        projectList.forEach((project) => {
+            if (project.name == projectName) {
+                addTodo(event, project); //add todo to project's internal storage of todo items
+            }
+        })
+    });
 
     //append everything in order
     appendToProjectNameContainer(nameAndButtonsContainer, buttonContainer, viewProjectButton, addTodoButton);
@@ -79,31 +93,24 @@ function createListOfProjects() {
     containerDiv.appendChild(ul);
 
     projectList.forEach((project) => {
-        //div container that stores the project name and the button container
-        const projectListDiv = document.createElement('div');
-        projectListDiv.id = "project-list-div";
-        ul.appendChild(projectListDiv);
+        const projectListContainer = createProjectListContainer();
 
         const projectName = document.createElement('p');
         projectName.textContent = `${project.name}`;
-        projectListDiv.appendChild(projectName);
 
-        //div container that stores the "view project" and "add todo" buttons
-        const projectdueDateAndRemoveButtonContainer = document.createElement('div');
-        projectdueDateAndRemoveButtonContainer.id = "project-buttons-container";
-        projectListDiv.appendChild(projectdueDateAndRemoveButtonContainer);
+        const dueDateAndRemoveButtonContainer = createDueDateAndRemoveButtonContainer();
 
-        const viewButton = document.createElement('button');
-        viewButton.textContent = 'View project';
-        viewButton.classList.add("project-buttons");
+        const viewButton = createViewProjectButton();
         viewButton.addEventListener('click', () => {viewProject(project)});
-        projectdueDateAndRemoveButtonContainer.appendChild(viewButton);
 
-        const addTodoButton = document.createElement('button');
-        addTodoButton.textContent = "Add todo";
-        addTodoButton.classList.add("project-buttons");
+        const addTodoButton = createAddTodoButton();
         addTodoButton.addEventListener('click', (event) => {addTodo(event, project)})
-        projectdueDateAndRemoveButtonContainer.appendChild(addTodoButton);
+        
+        ul.appendChild(projectListContainer);
+        projectListContainer.appendChild(projectName);
+        projectListContainer.appendChild(dueDateAndRemoveButtonContainer);
+        dueDateAndRemoveButtonContainer.appendChild(viewButton);
+        dueDateAndRemoveButtonContainer.appendChild(addTodoButton);
     });
 }
 

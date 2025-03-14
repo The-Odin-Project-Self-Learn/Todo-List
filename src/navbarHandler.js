@@ -26,4 +26,4 @@ function loadProjects() {
 }
 
 
-export {loadHomePage, createProject, loadProjects, viewProject};
+export {loadHomePage, createProject, loadProjects};
