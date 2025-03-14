@@ -157,13 +157,7 @@ function addTodosToContainer(todoContainer, project) {
 }
 
 function createListOfProjects() {
-    let todoContainer = document.getElementById('todo-container');
-    if (!todoContainer) {
-        todoContainer = document.createElement('div');
-        todoContainer.id = 'todo-container';
-    }
-
-    todoContainer.textContent = '';
+    containerDiv.textContent = '';
 
     const ul = document.createElement('ul');
     ul.textContent = "My Projects: ";

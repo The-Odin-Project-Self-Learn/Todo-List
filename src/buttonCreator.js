@@ -14,6 +14,7 @@ function createAddTodoButton() {
 
 function createRemoveTodoButton() {
     const removeTodoButton = document.createElement('button');
+    removeTodoButton.textContent = "Remove todo";
     removeTodoButton.id = "remove-todo-button";
     return removeTodoButton;
 }
