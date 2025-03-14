@@ -97,8 +97,9 @@ function viewProject(project) {
 
     //create and fill container for the project name and "add todo" button
     const headerContainer = createHeaderContainer();
-    const projectName = document.createElement('p');
+    const projectName = document.createElement('h3');
     projectName.textContent = project.name;
+    projectName.id = "project-name";
 
     //create "add todo" button
     const addTodoButton = createAddTodoButton();
@@ -157,6 +158,8 @@ function addTodosToContainer(todoContainer, project) {
 }
 
 function createListOfProjects() {
+    viewingProject = null;
+    
     containerDiv.textContent = '';
 
     const ul = document.createElement('ul');

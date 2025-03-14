@@ -1,10 +1,8 @@
-import {createInputField, addProject, showProjectName, createListOfProjects, processForm, createHeaderContainer} from "./buttonHandler";
+import {createInputField, addProject, showProjectName, createListOfProjects} from "./buttonHandler";
 
 function loadHomePage() {
-    const todoContainer = document.getElementById('todo-container');
-    if (todoContainer) {
-        todoContainer.textContent = '';
-    }
+    const containerDiv = document.getElementById('main-container');
+    containerDiv.textContent = '';
 }
 
 /*

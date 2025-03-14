@@ -26,7 +26,7 @@ function createDueDateAndRemoveButtonContainer() {
 
 function createHeaderContainer() {
     const projectTitleContainer = document.createElement('div');
-    projectTitleContainer.classList.add('project-title-container');
+    projectTitleContainer.id = 'project-title-container';
     return projectTitleContainer;
 }
 

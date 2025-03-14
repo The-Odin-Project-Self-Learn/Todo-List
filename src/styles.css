@@ -25,10 +25,19 @@ li {
   justify-content: space-evenly;
 }
 
+#project-title-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
 #project-buttons-container {
   display: flex;
   flex-direction: row;
   align-items: center;
+  gap: 20px;
 }
 
 #project-list-container {
@@ -57,6 +66,10 @@ li {
   gap: 50px;
 }
 
+#project-name {
+  font-size: 20px;
+}
+
 #create-project-btn {
 
 }
@@ -70,19 +83,12 @@ li {
 }
 
 #remove-todo-button {
-  height: 40px;
+  height: 20px;
 }
 
 /* Class selectors */
 .project-buttons {
   height: 40px;
-}
-
-.project-title-container {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 10px;
 }
 
 .due-date-and-remove-button-container {
@@ -93,5 +99,5 @@ li {
 }
 
 .todo-item-content {
-  font-size: 20px;
+  font-size: 15px;
 }
