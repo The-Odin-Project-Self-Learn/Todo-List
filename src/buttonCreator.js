@@ -14,8 +14,7 @@ function createAddTodoButton() {
 
 function createRemoveTodoButton() {
     const removeTodoButton = document.createElement('button');
-    todoTitle.textContent = `${todo.title}`;
-    todoTitle.classList.add("todo-item-content");
+    removeTodoButton.id = "remove-todo-button";
     return removeTodoButton;
 }
 

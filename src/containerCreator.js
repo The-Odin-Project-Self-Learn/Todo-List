@@ -33,7 +33,7 @@ function createHeaderContainer() {
 //creates container for the todo item title and due date + buttons
 function createTodoItemContainer() {
     const todoItemContainer = document.createElement("div");
-    todoItemDiv.id = "todo-item-container";
+    todoItemContainer.id = "todo-item-container";
     return todoItemContainer;
 }
 

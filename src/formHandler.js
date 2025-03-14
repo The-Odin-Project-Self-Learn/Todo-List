@@ -24,6 +24,8 @@ function buildForm(clickedButton) {
     form.appendChild(titleInput);
     form.appendChild(dueDateInput);
     form.appendChild(submitButton);
+
+    return form;
 }
 
 export {buildForm};
